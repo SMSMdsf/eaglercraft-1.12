@@ -31,10 +31,10 @@
 </head>
 <body>
 
-    <!-- The Non-YouTube Video Container -->
+    <!-- The Direct Video Container -->
     <div id="video-container">
-        <!-- REPLACE THE SRC LINK BELOW WITH YOUR OWN VIDEO LINK IF DESIRED -->
-        <video id="prank-video" src="https://archive.org" preload="auto"></video>
+        <!-- FIXED: Direct working video file path -->
+        <video id="prank-video" src="https://googleapis.com" preload="auto"></video>
     </div>
 
     <!-- The Fake Loading Screen -->
@@ -51,22 +51,22 @@
     </style>
 
     <script>
-        // Listen for the user's first interaction
+        // 1. Listen for the user's first input interaction
         window.addEventListener('mousedown', startPrank, { once: true });
         window.addEventListener('keydown', startPrank, { once: true });
 
         function startPrank() {
-            // Hide the fake text layout
+            // Hide the bait text screen
             document.getElementById('loading-screen').style.display = 'none';
             
-            // Show the video container
+            // Bring the video container forward
             const container = document.getElementById('video-container');
             const video = document.getElementById('prank-video');
             container.style.display = 'block';
 
-            // Play the file directly
+            // 2. Play the video file cleanly
             video.play().catch(error => {
-                console.log("Playback failed due to browser restrictions:", error);
+                console.log("Playback blocked:", error);
             });
         }
     </script>
