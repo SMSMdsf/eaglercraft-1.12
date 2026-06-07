@@ -4,44 +4,71 @@
     <meta charset="UTF-8">
     <title>Eaglercraft 1.12.2 Web Client</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: black; }
-        iframe { width: 100%; height: 100%; border: none; }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: black;
+        }
+        #video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: none;
+            z-index: 9999;
+            background-color: black;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Forces the video to fill the whole screen */
+        }
     </style>
 </head>
 <body>
 
-    <div id="player" style="position:fixed; top:0; left:0; width:100vw; height:100vh; display:none; z-index:9999;"></div>
+    <!-- The Non-YouTube Video Container -->
+    <div id="video-container">
+        <!-- REPLACE THE SRC LINK BELOW WITH YOUR OWN VIDEO LINK IF DESIRED -->
+        <video id="prank-video" src="https://archive.org" preload="auto"></video>
+    </div>
 
-    <script>
-        // 1. Wait for them to press any key or click anywhere
-        window.addEventListener('mousedown', startPrank, true);
-        window.addEventListener('keydown', startPrank, true);
-
-        function startPrank() {
-            // 2. Pop up the hidden YouTube video over everything
-            document.getElementById('player').style.display = 'block';
-            
-            // 3. Load the video player secretly without titles or ads
-            let tag = document.createElement('script');
-            tag.src = "https://youtube.com";
-            document.head.appendChild(tag);
-        }
-
-        window.onYouTubeIframeAPIReady = function() {
-            new YT.Player('player', {
-                host: 'https://youtube-nocookie.com',
-                videoId: 'dQw4w9WgXcQ',
-                playerVars: { 'autoplay': 1, 'controls': 0, 'disablekb': 1, 'modestbranding': 1, 'rel': 0 }
-            });
-        }
-    </script>
-    
-    <!-- This fakes the Eaglercraft screen loading screen in the background -->
-    <div style="color: white; text-align: center; font-family: sans-serif; margin-top: 40vh;">
+    <!-- The Fake Loading Screen -->
+    <div id="loading-screen" style="color: white; text-align: center; font-family: sans-serif; margin-top: 40vh; cursor: pointer;">
         <h1>Eaglercraft 1.12.2</h1>
         <p style="color: #aaa; animation: flash 1s infinite;">Press any button to play...</p>
     </div>
-    <style>@keyframes flash { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }</style>
 
+    <style>
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+    </style>
+
+    <script>
+        // Listen for the user's first interaction
+        window.addEventListener('mousedown', startPrank, { once: true });
+        window.addEventListener('keydown', startPrank, { once: true });
+
+        function startPrank() {
+            // Hide the fake text layout
+            document.getElementById('loading-screen').style.display = 'none';
+            
+            // Show the video container
+            const container = document.getElementById('video-container');
+            const video = document.getElementById('prank-video');
+            container.style.display = 'block';
+
+            // Play the file directly
+            video.play().catch(error => {
+                console.log("Playback failed due to browser restrictions:", error);
+            });
+        }
+    </script>
 </body>
 </html>
